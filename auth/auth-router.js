@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const restricted = require("./authenticate-middleware.js");
 const jwt = require("jsonwebtoken");
-const private = require("../private/privacy.js");
-const Users = require("./user-model.js");
+const secret = require("../private/privacy.js");
+const Users = require("./model.js");
 const bcrypt = require("bcryptjs");
 
 router.post("/register", (req, res) => {
@@ -32,7 +32,8 @@ router.post("/login", (req, res) => {
     if (user && bcrypt.compareSync(password, user.password))
     {
       const token = getToken(user)
-      const decode = jwt.verify(token, private.jwtSecret)
+      const decode = jwt.verify(token, secret.jwtSecret)
+      console.log(decode)
 
       res.status(200).json({
         Message: `Welcome ${user.username}!`,
@@ -57,7 +58,7 @@ function getToken(user) {
   const expiration = {
     expiresIn: "30m"
   }
-  return jwt.sign(payload, private.jwtSecret, expiration)
+  return jwt.sign(payload, secret.jwtSecret, expiration)
 }
 
 router.get('/users', restricted, (req, res) => {

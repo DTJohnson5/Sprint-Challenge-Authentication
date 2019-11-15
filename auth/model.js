@@ -1,28 +1,37 @@
 const dBase = require('../database/dbConfig.js');
 
 module.exports = {
-    register,
     find,
     findBy,
-    findById,
+    addUser,
+    findByUser,
+    getLoggedIn
   };
   
   function find() {
-    return db('users').select('id', 'username', 'password');
+    return dBase('users').select('id', 'username', 'password');
   }
   
-  function findBy(filter) {
-    return db('users').where(filter);
+  function findBy(id) {
+    return dBase('users').where({id});
   }
   
-  async function register(user) {
-    const [id] = await db('users').insert(user);
-  
-    return findById(id);
+  function addUser(user) {
+    return dBase('users')
+    .insert(user)
+    .then(idx => {
+      const id = idx[0];
+      return findBy(id);
+    })
   }
   
-  function findById(id) {
-    return db('users')
-      .where({ id })
-      .first();
+  function findByUser(user) {
+    return dBase('users')
+      .where({user})
+  }
+
+  function getLoggedIn(id) {
+    return dBase('users')
+    .where({id})
+    .first()
   }

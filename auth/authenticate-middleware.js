@@ -4,13 +4,13 @@
 */
 
 const jwt = require("jsonwebtoken");
-const private = require("../private/privacy.js");
+const secret = require("../private/privacy.js");
 
 module.exports = (req, res, next) => {
   const token = req.headers.authorization;
 
   if(token) {
-    jwt.verify(token, private.jwtSecret, (error, decodedToken) => {
+    jwt.verify(token, secret.jwtSecret, (error, decodedToken) => {
       if(error) {
         res.status(401).json({ You: 'are not a natural male!' });
       } else {
