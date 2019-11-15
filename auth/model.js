@@ -27,7 +27,7 @@ module.exports = {
   
   function findByUser(user) {
     return dBase('users')
-      .where({user})
+      .where(user)
   }
 
   function getLoggedIn(id) {

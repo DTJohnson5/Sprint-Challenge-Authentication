@@ -12,7 +12,7 @@ router.post("/register", (req, res) => {
   const muddle = bcrypt.hashSync(user.password, 12);
   user.password = muddle;
 
-  Users.register(user)
+  Users.addUser(user)
     .then(saved => {
       res.status(201).json(saved);
     })
@@ -26,7 +26,7 @@ router.post("/login", (req, res) => {
 
   let {username, password} = req.body;
 
-  Users.findBy({username})
+  Users.findByUser({username})
   .first()
   .then(user => {
     if (user && bcrypt.compareSync(password, user.password))
@@ -40,6 +40,7 @@ router.post("/login", (req, res) => {
         token:token
       });
     } else {
+      console.log(user)
       res.status(401).json({Error: "You have entered invalid credentials."});
     }
   })
