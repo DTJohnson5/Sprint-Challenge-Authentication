@@ -8,7 +8,7 @@
     "test": "cross-env DB_ENV=testing jest --watch",
     "start": "node index.js"
   },
-  "jest" {
+  "jest": {
     "testEnvironment": "node"
   },
   "repository": {
